@@ -39,7 +39,13 @@ export default function FAQSection() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-200 via-yellow-100 to-white p-10">
+    <section
+      className="flex items-center justify-center p-20"
+      style={{
+        background:
+          'linear-gradient(270.26deg, rgba(255, 255, 255, 0) 0.23%, rgba(255, 208, 104, 0.74) 99.77%)',
+      }}
+    >
       <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-4xl font-bold text-center mb-4">Frequently Asked Questions</h2>

@@ -19,7 +19,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-10 flex items-center justify-between">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Image src={logo} alt="logo-etp" width={250} height={250} />
+          <Image src={logo} alt="logo-etp" width={350} height={350} />
         </div>
 
         {/* Desktop Navigation */}

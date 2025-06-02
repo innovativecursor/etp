@@ -7,6 +7,7 @@ import DesignBuildServices from '../components/DesignBuildServices'
 import OurProjects from '../components/OurProjects'
 import TestimonialSection from '../components/TestimonialsSection'
 import FAQSection from '../components/FAQSection'
+import ContactSection from '../components/ContactSection'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <OurProjects />
       <TestimonialSection />
       <FAQSection />
+      <ContactSection />
       <Footer />
     </>
   )

@@ -93,7 +93,7 @@ const TestimonialSection = () => {
           </button>
 
           {/* Avatar Circle Row */}
-          <div className="relative overflow-hidden">
+          <div className="relative">
             <div
               className="flex gap-8 transition-transform duration-500 ease-in-out"
               style={{
