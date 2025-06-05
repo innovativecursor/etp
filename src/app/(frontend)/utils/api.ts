@@ -47,3 +47,27 @@ export const fetchFAQs = async () => {
     throw error
   }
 }
+
+export const fetchProjects = async () => {
+  try {
+    const response = await fetch(`/api/projects`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Backend error response:', data)
+      throw new Error(data.message || `HTTP error! Status: ${response.status}`)
+    }
+
+    // Return the actual array of projects here
+    return data.docs || [] // <-- Adjust if your array is under another key
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    throw error
+  }
+}

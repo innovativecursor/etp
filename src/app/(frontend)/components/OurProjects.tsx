@@ -4,54 +4,8 @@ import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
-import project1 from '../public/assets/ProjectsAssets/project_1.png'
-import project2 from '../public/assets/ProjectsAssets/project_2.png'
-import project3 from '../public/assets/ProjectsAssets/project_3.png'
-import project4 from '../public/assets/ProjectsAssets/project_4.png'
-import project5 from '../public/assets/ProjectsAssets/project_5.png'
-import project6 from '../public/assets/ProjectsAssets/project_6.png'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-
-const categories = ['All Works', 'Construction', 'Architecture', 'Building', 'Renovations']
-
-const projects = [
-  {
-    title: 'Hacienda Verde Residences',
-    location: 'Barangay Sta. Lucia, Calumpit',
-    image: project1,
-    category: 'Construction',
-  },
-  {
-    title: 'North Haven Villas',
-    location: 'Along MacArthur Highway, Calumpit',
-    image: project2.src,
-    category: 'Architecture',
-  },
-  {
-    title: 'Hacienda Verde Residences',
-    location: 'Barangay Sta. Lucia, Calumpit',
-    image: project3.src,
-    category: 'Building',
-  },
-  {
-    title: 'The Fields At Calumpit',
-    location: 'Near Calumpit River, Brgy. Poblacion',
-    image: project4.src,
-    category: 'Renovations',
-  },
-  {
-    title: 'Modern Townhomes',
-    location: 'Metro Manila',
-    image: project5.src,
-    category: 'Construction',
-  },
-  {
-    title: 'Skyline Tower',
-    location: 'Quezon City',
-    image: project6.src,
-    category: 'Architecture',
-  },
-]
+import { fetchProjects } from '../utils/api'
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -62,15 +16,34 @@ const OurProjects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Works')
   const [index, setIndex] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
+  const [projectsData, setProjectsData] = useState<any[]>([]) // fetched projects state
+  const categories = [...Array.from(new Set(projectsData.map((p) => p.category)))]
   const sliderRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const scrollLeft = useRef(0)
   const isDown = useRef(false)
 
+  // Fetch projects from API once on component mount
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const data = await fetchProjects()
+        setProjectsData(data)
+      } catch (error) {
+        console.error('Failed to fetch projects:', error)
+      }
+    }
+    loadProjects()
+  }, [])
+
+  // Use only fetched projects data, no static fallback
+  const projectsToUse = projectsData
+
+  // Filter projects by category
   const filtered =
     selectedCategory === 'All Works'
-      ? projects
-      : projects.filter((p) => p.category === selectedCategory)
+      ? projectsToUse
+      : projectsToUse.filter((p) => p.category === selectedCategory)
 
   useEffect(() => {
     const updateCardsPerView = () => {
@@ -84,6 +57,7 @@ const OurProjects = () => {
     window.addEventListener('resize', updateCardsPerView)
     return () => window.removeEventListener('resize', updateCardsPerView)
   }, [])
+
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
@@ -94,6 +68,7 @@ const OurProjects = () => {
       behavior: 'smooth',
     })
   }, [index, cardsPerView, filtered.length])
+
   const nextSlide = () => {
     const maxIndex = Math.ceil(filtered.length / cardsPerView) - 1
     if (index < maxIndex) {
@@ -107,7 +82,7 @@ const OurProjects = () => {
     }
   }
 
-  // Mouse dragging events
+  // Mouse dragging event handlers (unchanged)
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
@@ -133,7 +108,7 @@ const OurProjects = () => {
       if (!isDown.current) return
       e.preventDefault()
       const x = e.pageX - slider.offsetLeft
-      const walk = (x - startX.current) * 1.5 // scroll-fast
+      const walk = (x - startX.current) * 1.5
       slider.scrollLeft = scrollLeft.current - walk
     }
 
@@ -158,28 +133,31 @@ const OurProjects = () => {
           <h2 className="text-[54px] font-semibold">Our Projects</h2>
           <div className="mt-4 overflow-x-auto sm:mt-0">
             <div className="flex gap-6 text-sm relative min-w-max">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat)
-                    setIndex(0)
-                  }}
-                  className={`relative pb-1 ${
-                    selectedCategory === cat
-                      ? 'text-[#F4B324] text-[12px]'
-                      : 'text-gray-400 text-[12px]'
-                  }`}
-                >
-                  {cat}
-                  {selectedCategory === cat && (
-                    <motion.div
-                      layoutId="underline"
-                      className="absolute bottom-0 left-0 h-[2px] bg-[#F4B324] w-full"
-                    />
-                  )}
-                </button>
-              ))}
+              {categories
+                .slice()
+                .reverse()
+                .map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSelectedCategory(cat)
+                      setIndex(0)
+                    }}
+                    className={`relative pb-1 ${
+                      selectedCategory === cat
+                        ? 'text-[#F4B324] text-[12px]'
+                        : 'text-gray-400 text-[12px]'
+                    }`}
+                  >
+                    {cat}
+                    {selectedCategory === cat && (
+                      <motion.div
+                        layoutId="underline"
+                        className="absolute bottom-0 left-0 h-[2px] bg-[#F4B324] w-full"
+                      />
+                    )}
+                  </button>
+                ))}
             </div>
           </div>
         </div>
@@ -206,7 +184,7 @@ const OurProjects = () => {
                   }}
                 >
                   <Image
-                    src={project.image}
+                    src={project.images?.[0]?.image?.url || '/fallback.jpg'}
                     alt={project.title}
                     fill
                     style={{ objectFit: 'cover' }}
