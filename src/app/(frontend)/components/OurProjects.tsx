@@ -227,9 +227,15 @@ const OurProjects = () => {
 
         {/* CTA */}
         <div className="mt-20 flex justify-center">
-          <button className="bg-[#FEBC5D] text-black py-4 px-12 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] transition">
-            Get Free Consultation
-          </button>
+          <a
+            href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="bg-[#FEBC5D] text-black py-4 px-12 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] transition">
+              Get Free Consultation
+            </button>
+          </a>
         </div>
       </div>
     </section>

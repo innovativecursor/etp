@@ -112,10 +112,15 @@ const Navbar = () => {
                   0995 5555 312
                 </a>
               </div>
-
-              <button className="border px-4 py-2 text-white text-sm tracking-wider font-light w-full">
-                Get a Free Consultation
-              </button>
+              <a
+                href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="border px-4 py-2 text-white text-sm tracking-wider font-light w-full cursor-pointer">
+                  Get a Free Consultation
+                </button>
+              </a>
             </div>
           </motion.aside>
         )}
