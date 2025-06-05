@@ -64,10 +64,55 @@ export const fetchProjects = async () => {
       throw new Error(data.message || `HTTP error! Status: ${response.status}`)
     }
 
-    // Return the actual array of projects here
-    return data.docs || [] // <-- Adjust if your array is under another key
+    return data.docs || []
   } catch (error) {
     console.error('Error fetching projects:', error)
+    throw error
+  }
+}
+
+export const fetchTestimonials = async () => {
+  try {
+    const response = await fetch(`/api/testimonials`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Backend error response:', data)
+      throw new Error(data.message || `HTTP error! Status: ${response.status}`)
+    }
+
+    return data.docs || []
+  } catch (error) {
+    console.error('Error fetching testimonials:', error)
+    throw error
+  }
+}
+
+export const fetchServices = async () => {
+  try {
+    const response = await fetch(`/api/services`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Backend error response:', data)
+      throw new Error(data.message || `HTTP error! Status: ${response.status}`)
+    }
+
+    return data.docs || []
+  } catch (error) {
+    console.error('Error fetching services:', error)
     throw error
   }
 }

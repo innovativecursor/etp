@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image, { StaticImageData } from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaBuilding, FaHome, FaImage, FaUser, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
@@ -8,6 +8,9 @@ import { MdOutlineFence } from 'react-icons/md'
 import { LuWaves } from 'react-icons/lu'
 import project1 from '../public/assets/ProjectsAssets/project_1.png'
 import project2 from '../public/assets/ProjectsAssets/project_2.png'
+import { fetchServices } from '../utils/api'
+// ⬅️ adjust the path if needed
+
 type Service = {
   icon: React.ReactElement
   title: string
@@ -68,6 +71,7 @@ const services: Service[] = [
 const DesignBuildServices = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [dynamicServices, setDynamicServices] = useState<Service[] | null>(null)
 
   const handleNext = () => {
     if (!selectedService) return
@@ -80,10 +84,44 @@ const DesignBuildServices = () => {
       (prev) => (prev - 1 + selectedService.images.length) % selectedService.images.length,
     )
   }
+  // @ts-ignore - Ignore "unused attribute" warning
+  // Helper to map icon name from API to actual icon component
+  const getIcon = (iconName: string): JSX.Element => {
+    const size = 40
+    const color = '#2d2d2e'
+    // @ts-ignore - Ignore "unused attribute" warning
+    const icons: Record<string, JSX.Element> = {
+      FaBuilding: <FaBuilding size={size} color={color} />,
+      FaHome: <FaHome size={size} color={color} />,
+      FaImage: <FaImage size={size} color={color} />,
+      FaUser: <FaUser size={size} color={color} />,
+      MdOutlineFence: <MdOutlineFence size={size} color={color} />,
+      LuWaves: <LuWaves size={size} color={color} />,
+    }
+
+    return icons[iconName] || <FaBuilding size={size} color={color} />
+  }
+
+  useEffect(() => {
+    fetchServices()
+      .then((data) => {
+        const mapped = data.map((item: any) => ({
+          icon: getIcon(item.icon),
+          title: item.title,
+          description: item.description,
+          number: item.number,
+          images: item.images.map((img: any) => img.image?.url || img.url),
+        }))
+        setDynamicServices(mapped)
+      })
+      .catch((err) => {
+        console.error('Error loading services from API:', err)
+      })
+  }, [])
 
   return (
     <section id="services">
-      {/* Black Stripe Header */}
+      {/* Header */}
       <div className="bg-[#0D0B0A] py-12 text-center">
         <h2 className="text-[54px] font-semibold text-[#FEBC5D] mb-2">Design and Build Services</h2>
         <p className="text-white !font-extralight text-[14px]">
@@ -91,90 +129,81 @@ const DesignBuildServices = () => {
         </p>
       </div>
 
-      {/* Horizontal Card Layout */}
+      {/* Cards */}
       <div className="bg-[#fffaf0] py-20 px-6 overflow-x-auto">
-        <div
-          className="
-            flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto
-            flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap
-            overflow-x-auto
-          "
-        >
-          {services.map((service, index) => {
-            const shouldFlip = ['01', '03', '05'].includes(service.number)
-            const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
-
-            return (
-              <div
-                key={index}
-                className="
-        flex flex-col items-center min-w-[200px] max-w-[220px] text-center
-        sm:min-w-[150px] sm:max-w-[180px]
-        md:min-w-[180px] md:max-w-[200px]
-      "
-              >
-                {/* MOBILE VIEW ONLY: Always show number → icon → title → description */}
-                <div className="block sm:hidden flex flex-col items-center text-center">
-                  <span className="text-[54px] font-extrabold text-[#FFE8B6]">
-                    {service.number}
-                  </span>
-                  <div
-                    onClick={() => {
-                      setSelectedService(service)
-                      setCurrentIndex(0)
-                    }}
-                    className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
-                  >
-                    <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
-                    <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+        <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap overflow-x-auto">
+          {(dynamicServices || services)
+            .slice()
+            .reverse()
+            .map((service, index) => {
+              const shouldFlip = ['01', '03', '05'].includes(service.number)
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col items-center min-w-[200px] max-w-[220px] text-center sm:min-w-[150px] sm:max-w-[180px] md:min-w-[180px] md:max-w-[200px]"
+                >
+                  {/* Mobile View */}
+                  <div className="block sm:hidden flex flex-col items-center text-center">
+                    <span className="text-[54px] font-extrabold text-[#FFE8B6]">
+                      {service.number}
+                    </span>
+                    <div
+                      onClick={() => {
+                        setSelectedService(service)
+                        setCurrentIndex(0)
+                      }}
+                      className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
+                    >
+                      <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
+                      <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+                    </div>
+                    <h3 className="text-md font-bold mt-2">{service.title}</h3>
+                    <p className="text-sm text-gray-700 mt-2">{service.description}</p>
                   </div>
-                  <h3 className="text-md font-bold mt-2">{service.title}</h3>
-                  <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                </div>
 
-                {/* DESKTOP VIEW ONLY: Apply your original flipping logic */}
-                <div className="hidden md:flex flex-col items-center text-center">
-                  {!shouldFlip ? (
-                    <>
-                      <span className="text-[54px] font-extrabold text-[#FFE8B6]">
-                        {service.number}
-                      </span>
-                      <div
-                        onClick={() => {
-                          setSelectedService(service)
-                          setCurrentIndex(0)
-                        }}
-                        className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
-                      >
-                        <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
-                        <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
-                      </div>
-                      <h3 className="text-md font-bold">{service.title}</h3>
-                      <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                    </>
-                  ) : (
-                    <>
-                      <h3 className="text-md font-bold mt-2">{service.title}</h3>
-                      <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                      <div
-                        onClick={() => {
-                          setSelectedService(service)
-                          setCurrentIndex(0)
-                        }}
-                        className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center rotate-180 cursor-pointer"
-                      >
-                        <div className="z-10 text-[#2d2d2e] rotate-180">{service.icon}</div>
-                        <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
-                      </div>
-                      <span className="text-[54px] font-extrabold text-[#FFE8B6]">
-                        {service.number}
-                      </span>
-                    </>
-                  )}
+                  {/* Desktop View */}
+                  <div className="hidden md:flex flex-col items-center text-center">
+                    {!shouldFlip ? (
+                      <>
+                        <span className="text-[54px] font-extrabold text-[#FFE8B6]">
+                          {service.number}
+                        </span>
+                        <div
+                          onClick={() => {
+                            setSelectedService(service)
+                            setCurrentIndex(0)
+                          }}
+                          className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
+                        >
+                          <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
+                          <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+                        </div>
+                        <h3 className="text-md font-bold">{service.title}</h3>
+                        <p className="text-sm text-gray-700 mt-2">{service.description}</p>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-md font-bold mt-2">{service.title}</h3>
+                        <p className="text-sm text-gray-700 mt-2">{service.description}</p>
+                        <div
+                          onClick={() => {
+                            setSelectedService(service)
+                            setCurrentIndex(0)
+                          }}
+                          className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center rotate-180 cursor-pointer"
+                        >
+                          <div className="z-10 text-[#2d2d2e] rotate-180">{service.icon}</div>
+                          <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+                        </div>
+                        <span className="text-[54px] font-extrabold text-[#FFE8B6]">
+                          {service.number}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
         </div>
       </div>
 
@@ -200,11 +229,12 @@ const DesignBuildServices = () => {
               </h2>
 
               <div className="relative w-full h-[300px] sm:h-[400px] rounded overflow-hidden">
+                {/* <-- FIXED HERE: Use the image URL string directly --> */}
                 <Image
                   src={selectedService.images[currentIndex]}
                   alt={`${selectedService.title} image`}
                   fill
-                  className="object-cover rounded"
+                  className="object-cover rounded h-full"
                 />
                 <button
                   onClick={handlePrev}
