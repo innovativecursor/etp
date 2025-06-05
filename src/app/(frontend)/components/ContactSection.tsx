@@ -1,9 +1,36 @@
 'use client'
 
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
-import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaInstagram } from 'react-icons/fa6'
+import { useState } from 'react'
 
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaFacebookF } from 'react-icons/fa6'
+import { submitSimpleContactUs } from '../utils/api'
+import { showToast } from './Toaster'
+import { motion } from 'framer-motion'
 const ContactSection = () => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    const success = await submitSimpleContactUs(form)
+    setIsLoading(false)
+    if (success) {
+      showToast('Message sent successfully!', 'success')
+      setForm({ name: '', email: '', message: '' })
+    } else {
+      showToast('Failed to send message. Please try again.', 'error')
+    }
+  }
+
   return (
     <div className="relative w-full overflow-hidden">
       {/* Background Split - Half Orange and Half Black */}
@@ -24,32 +51,44 @@ const ContactSection = () => {
                   Have questions or ready to start? We’re here to help.
                 </p>
 
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="flex flex-col lg:flex-row gap-4">
                     <input
                       type="text"
+                      name="name"
                       placeholder="Name"
+                      value={form.name}
+                      onChange={handleChange}
+                      required
                       className="flex-1 p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                     />
                     <input
                       type="email"
+                      name="email"
                       placeholder="Email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
                       className="flex-1 p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                     />
                   </div>
                   <textarea
+                    name="message"
                     placeholder="Message"
                     rows={4}
+                    value={form.message}
+                    onChange={handleChange}
+                    required
                     className="w-full p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                   />
 
-                  {/* Wrap button in a div with flex and justify-end to align right */}
                   <div className="flex justify-end">
                     <button
                       type="submit"
-                      className="border border-white text-white px-12 py-2 text-sm hover:bg-white hover:text-[#FDBA57] transition"
+                      className="border border-white text-white px-12 py-2 text-sm hover:bg-white hover:text-[#FDBA57] transition flex items-center justify-center gap-2"
+                      disabled={isLoading}
                     >
-                      Send Message
+                      {isLoading ? 'Sending...' : 'Send Message'}
                     </button>
                   </div>
                 </form>
@@ -59,7 +98,6 @@ const ContactSection = () => {
             {/* Right Side: Contact Info - Black BG */}
             <div className="bg-black px-6 md:px-14 py-16 text-white flex flex-col justify-between">
               <div className="w-full max-w-2xl ml-auto">
-                {/* Social Icons and Divider */}
                 <div className="mb-10">
                   <div className="flex justify-center space-x-4 mb-6">
                     <a
@@ -71,33 +109,28 @@ const ContactSection = () => {
                       <FaFacebookF size={14} />
                     </a>
                   </div>
-
-                  {/* Full-width divider ignoring padding */}
                   <div className="w-screen relative left-1/2 right-1/2 -translate-x-1/2 border-t border-gray-500 opacity-30" />
                 </div>
 
-                {/* Contact Details */}
-                <div className="w-full max-w-2xl ml-auto">
-                  <div className="space-y-6 text-sm">
-                    <div className="flex  items-center gap-4">
-                      <FaPhoneAlt size={20} className="text-[#FDBA57]" />
-                      <a href="tel:09955555312" className="text-2xl hover:underline">
-                        0995 5555 312
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <FaEnvelope size={20} className="text-[#FDBA57]" />
-                      <a
-                        href="mailto:edwin_t_pagtalunan@yahoo.com"
-                        className="text-2xl hover:underline"
-                      >
-                        edwin_t_pagtalunan@yahoo.com
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <FaMapMarkerAlt size={20} className="text-[#FDBA57]" />
-                      <span className="text-2xl">Calumpit, Bulacan, Philippines</span>
-                    </div>
+                <div className="space-y-6 text-sm">
+                  <div className="flex items-center gap-4">
+                    <FaPhoneAlt size={20} className="text-[#FDBA57]" />
+                    <a href="tel:09955555312" className="text-2xl hover:underline">
+                      0995 5555 312
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <FaEnvelope size={20} className="text-[#FDBA57]" />
+                    <a
+                      href="mailto:edwin_t_pagtalunan@yahoo.com"
+                      className="text-2xl hover:underline"
+                    >
+                      edwin_t_pagtalunan@yahoo.com
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <FaMapMarkerAlt size={20} className="text-[#FDBA57]" />
+                    <span className="text-2xl">Calumpit, Bulacan, Philippines</span>
                   </div>
                 </div>
               </div>
