@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPhoneAlt } from 'react-icons/fa'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { IoMdClose } from 'react-icons/io'
@@ -13,13 +13,28 @@ const navItems = ['Home', 'Services', 'About Us', 'Projects', 'Contact Us']
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [logoSize, setLogoSize] = useState(350)
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setLogoSize(250) // smaller screen size
+      } else {
+        setLogoSize(350) // larger screen size
+      }
+    }
+
+    handleResize() // initial check
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   return (
     <nav className="w-full bg-transparent text-white font-medium py-6 z-50 relative">
       <div className="container mx-auto px-4 md:px-10 flex items-center justify-between">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Image src={logo} alt="logo-etp" width={350} height={350} />
+          <Image src={logo} alt="logo-etp" width={logoSize} height={logoSize} />
         </div>
 
         {/* Desktop Navigation */}
@@ -27,8 +42,8 @@ const Navbar = () => {
           {/* Nav Links */}
           <ul className="flex items-center space-x-8 text-[#D1D1D1] font-light">
             {navItems.map((item, index) => (
-              <li key={index} className="cursor-pointer hover:text-white transition">
-                {item}
+              <li key={index} className="cursor-pointer hover:text-[#F4B324] transition">
+                <Link href={`#${item.replace(/\s+/g, '').toLowerCase()}`}>{item}</Link>
               </li>
             ))}
           </ul>
@@ -36,13 +51,21 @@ const Navbar = () => {
           {/* Phone */}
           <div className="flex items-center space-x-2 px-6">
             <FaPhoneAlt size={16} className="text-[#F4B324]" />
-            <span>09955555312</span>
+            <a href="tel:09955555312" className="hover:underline">
+              0995 5555 312
+            </a>
           </div>
 
           {/* Button */}
-          <button className="border px-6 py-2 text-white text-[14px] tracking-wider font-light transition">
-            Get a Free Consultation
-          </button>
+          <a
+            href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="border px-6 py-2 text-white text-[14px] tracking-wider font-light transition cursor-pointer">
+              Get a Free Consultation
+            </button>
+          </a>
         </div>
 
         {/* Hamburger Icon for Mobile */}
@@ -77,7 +100,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className="cursor-pointer hover:text-[#F4B324] transition"
                 >
-                  {item}
+                  <Link href={`#${item.replace(/\s+/g, '').toLowerCase()}`}>{item}</Link>
                 </li>
               ))}
             </ul>
@@ -85,7 +108,9 @@ const Navbar = () => {
             <div className="mt-auto pt-10 border-t border-white/20">
               <div className="flex items-center space-x-2 mb-4">
                 <FaPhoneAlt size={16} className="text-[#F4B324]" />
-                <span>09955555312</span>
+                <a href="tel:09955555312" className="hover:underline">
+                  0995 5555 312
+                </a>
               </div>
 
               <button className="border px-4 py-2 text-white text-sm tracking-wider font-light w-full">

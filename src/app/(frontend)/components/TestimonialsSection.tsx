@@ -93,43 +93,60 @@ const TestimonialSection = () => {
           </button>
 
           {/* Avatar Circle Row */}
-          <div className="relative">
-            <div
-              className="flex gap-8 transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(calc(50% - ${index * 72 + 32}px))`, // 64 width + 8 gap = 72, 32 = half of avatar width
-              }}
+          <div className="flex gap-8 justify-center items-center">
+            {/* Previous Avatar */}
+            <motion.div
+              className="rounded-full border-4 cursor-pointer"
+              initial={{ scale: 0.9, opacity: 0.4, filter: 'blur(2px)' }}
+              animate={{ scale: 0.9, opacity: 0.4, filter: 'blur(2px)' }}
+              whileHover={{ scale: 1 }}
+              transition={{ duration: 0.3 }}
+              onClick={() =>
+                changeTestimonial((index - 1 + testimonials.length) % testimonials.length)
+              }
             >
-              {testimonials.map((t, i) => (
-                <motion.div
-                  key={t.name}
-                  className={`relative transition-all duration-300 cursor-pointer ${
-                    i === index ? 'scale-110 z-10' : 'opacity-40 blur-sm'
-                  }`}
-                  animate={{
-                    scale: i === index ? 1.2 : 1,
-                    opacity: i === index ? 1 : 0.4,
-                    filter: i === index ? 'blur(0px)' : 'blur(2px)',
-                  }}
-                  transition={{ duration: 0.4 }}
-                  onClick={() => changeTestimonial(i)}
-                >
-                  <div
-                    className={`rounded-full border-4 transition-all duration-300 ${
-                      i === index ? 'border-[#F4B324]' : 'border-white/30'
-                    }`}
-                  >
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      width={64}
-                      height={64}
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+              <Image
+                src={testimonials[(index - 1 + testimonials.length) % testimonials.length].image}
+                alt="Previous client"
+                width={64}
+                height={64}
+                className="rounded-full object-cover border-4 border-white/30"
+              />
+            </motion.div>
+
+            {/* Current Avatar */}
+            <motion.div
+              className="rounded-full border-4 border-[#F4B324] z-10"
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.4 }}
+            >
+              <Image
+                src={testimonials[index].image}
+                alt="Current client"
+                width={64}
+                height={64}
+                className="rounded-full object-cover"
+              />
+            </motion.div>
+
+            {/* Next Avatar */}
+            <motion.div
+              className="rounded-full border-4 cursor-pointer"
+              initial={{ scale: 0.9, opacity: 0.4, filter: 'blur(2px)' }}
+              animate={{ scale: 0.9, opacity: 0.4, filter: 'blur(2px)' }}
+              whileHover={{ scale: 1 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => changeTestimonial((index + 1) % testimonials.length)}
+            >
+              <Image
+                src={testimonials[(index + 1) % testimonials.length].image}
+                alt="Next client"
+                width={64}
+                height={64}
+                className="rounded-full object-cover border-4 border-white/30"
+              />
+            </motion.div>
           </div>
 
           {/* Next Button */}

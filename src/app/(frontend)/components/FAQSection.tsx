@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import faqImage1 from '../public/assets/TestimonialsAssets/image_two.png'
+import Image from 'next/image'
 
 const faqs = [
   {
@@ -40,69 +42,63 @@ export default function FAQSection() {
 
   return (
     <section
-      className="flex items-center justify-center p-20"
+      className="flex items-center justify-center px-6 py-10 md:p-20"
       style={{
         background:
           'linear-gradient(270.26deg, rgba(255, 255, 255, 0) 0.23%, rgba(255, 208, 104, 0.74) 99.77%)',
       }}
     >
-      <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div className="flex flex-col items-center justify-center">
-          <h2 className="text-4xl font-bold text-center mb-4">Frequently Asked Questions</h2>
-          <p className="text-center text-gray-600 mb-6 max-w-md">
+      <div className="max-w-7xl w-full flex flex-col justify-center md:flex-row gap-20">
+        {/* Left Side */}
+        <div className="flex flex-col items-center">
+          <h2 className="text-4xl font-bold text-center md:text-left leading-tight mb-6">
+            Frequently Asked <br /> Questions
+          </h2>
+          <Image src={faqImage1} alt="construction" className="object-cover" />
+          <p className="mt-6 text-sm text-gray-800">
+            Still Have Questions?{' '}
+            <a className="text-[#F4B324] font-semibold" href="#">
+              Contact Us!
+            </a>
+          </p>
+        </div>
+
+        {/* Right Side */}
+
+        <div className="flex flex-col items-start max-w-xl mt-10 ">
+          {' '}
+          {/* <-- Add mt-10 here */}
+          <p className="mb-6 text-gray-600">
             Explore our FAQs for quick insights and detailed explanations. Still need help? Feel
             free to reach out directly!
           </p>
-          <div className="flex flex-col items-center">
-            <div className="overflow-hidden rounded-full w-64 h-64 mb-[-32px]">
-              <img
-                src="/construction1.jpg"
-                alt="construction"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div className="overflow-hidden rounded-full border-4 border-white w-48 h-48">
-              <img
-                src="/construction2.jpg"
-                alt="construction planning"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <p className="mt-6 text-sm text-gray-800">
-              Still Have Questions?{' '}
-              <a className="text-orange-500 font-semibold" href="#">
-                Contact Us!
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-gray-400 pb-3">
-              <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => toggleFAQ(index)}
-              >
-                <h4 className="font-semibold text-md">{faq.question}</h4>
-                <span className="text-xl font-bold text-yellow-600">
-                  {activeIndex === index ? '−' : '+'}
-                </span>
+          <div className="space-y-4 w-full mt-10">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-[#182022] pb-3 w-full">
+                <div
+                  className="flex justify-between items-center cursor-pointer"
+                  onClick={() => toggleFAQ(index)}
+                >
+                  <h4 className="font-medium text-[#182022] text-md">{faq.question}</h4>
+                  <span className="text-xl font-bold text-[#F4B324]">
+                    {activeIndex === index ? '−' : '+'}
+                  </span>
+                </div>
+                <AnimatePresence initial={false}>
+                  {activeIndex === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="mt-2 text-[#494949] font-normal text-sm">{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              <AnimatePresence initial={false}>
-                {activeIndex === index && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="mt-2 text-gray-600 text-sm">{faq.answer}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -8,7 +8,7 @@ const HeroSection = () => {
     <section className="relative h-[700px] md:h-[800px] overflow-hidden">
       <div className="container mx-auto flex flex-col md:flex-row items-center md:items-center justify-between h-full relative z-10">
         {/* Left side text */}
-        <div className="md:w-1/2 px-4 md:px-10 text-white space-y-6">
+        <div className="w-full lg:w-1/2 px-4 md:px-10 text-white space-y-6">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-wix-madefor tracking-wide font-bold leading-tight">
             Building Your <br />
             <span className="text-[#FEBC5D] ">Dream Home</span> <br />
@@ -18,9 +18,15 @@ const HeroSection = () => {
             Easily TAP into professional guidance for all your <br />
             architectural and engineering needs.
           </p>
-          <button className="bg-[#FEBC5D] text-black mt-8 px-10 text-[14px] font-light tracking-wide py-3 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] hover:ease-in-out transition">
-            Start Your Project Now
-          </button>
+          <a
+            href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="bg-[#FEBC5D] text-black mt-8 px-10 text-[14px] font-light tracking-wide py-3 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] hover:ease-in-out transition">
+              Start Your Project Now
+            </button>
+          </a>
         </div>
       </div>
 

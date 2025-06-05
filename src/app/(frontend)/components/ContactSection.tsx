@@ -7,47 +7,51 @@ const ContactSection = () => {
   return (
     <div className="relative w-full overflow-hidden">
       {/* Background Split - Half Orange and Half Black */}
-      <div className="absolute inset-0 flex z-0">
-        <div className="w-1/2 bg-[#FDBA57]" />
-        <div className="w-1/2 bg-black" />
+      <div className="absolute inset-0 flex flex-col md:flex-row z-0">
+        <div className="h-1/2 md:h-auto w-full md:w-1/2 bg-[#FDBA57]" />
+        <div className="h-1/2 md:h-auto w-full md:w-1/2 bg-black" />
       </div>
 
       {/* Content Layer */}
-      <section className="relative py-10 px-6 md:px-4 z-10">
+      <section id="contactus" className="relative md:px-4 z-10">
         <div className="container mx-auto overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 ">
             {/* Left Side: Contact Form - Orange BG */}
             <div className="bg-[#FDBA57] px-6 md:px-14 py-16 flex items-center">
               <div className="w-full max-w-2xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-2">Let’s Connect</h2>
-                <p className="text-sm md:text-base mb-8">
+                <p className="text-sm md:text-[12px] mb-8 text-[#2B2B2B]">
                   Have questions or ready to start? We’re here to help.
                 </p>
 
                 <form className="space-y-6">
-                  <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex flex-col lg:flex-row gap-4">
                     <input
                       type="text"
                       placeholder="Name"
-                      className="flex-1 p-3 bg-white text-black placeholder:text-black outline-none"
+                      className="flex-1 p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                     />
                     <input
                       type="email"
                       placeholder="Email"
-                      className="flex-1 p-3 bg-white text-black placeholder:text-black outline-none"
+                      className="flex-1 p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                     />
                   </div>
                   <textarea
                     placeholder="Message"
                     rows={4}
-                    className="w-full p-3 bg-white text-black placeholder:text-black outline-none"
+                    className="w-full p-3 bg-white text-[#666666] placeholder:text-[#666666] outline-none"
                   />
-                  <button
-                    type="submit"
-                    className="border border-white text-white px-6 py-2 text-sm hover:bg-white hover:text-[#FDBA57] transition"
-                  >
-                    Send Message
-                  </button>
+
+                  {/* Wrap button in a div with flex and justify-end to align right */}
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      className="border border-white text-white px-12 py-2 text-sm hover:bg-white hover:text-[#FDBA57] transition"
+                    >
+                      Send Message
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -55,47 +59,45 @@ const ContactSection = () => {
             {/* Right Side: Contact Info - Black BG */}
             <div className="bg-black px-6 md:px-14 py-16 text-white flex flex-col justify-between">
               <div className="w-full max-w-2xl ml-auto">
-                {/* Social Icons */}
-                <div className="flex justify-end space-x-4 mb-10">
-                  <a
-                    href="#"
-                    className="border border-white p-2 rounded-full hover:text-[#FDBA57] hover:border-[#FDBA57] transition"
-                  >
-                    <FaFacebookF size={14} />
-                  </a>
-                  <a
-                    href="#"
-                    className="border border-white p-2 rounded-full hover:text-[#FDBA57] hover:border-[#FDBA57] transition"
-                  >
-                    <FaLinkedinIn size={14} />
-                  </a>
-                  <a
-                    href="#"
-                    className="border border-white p-2 rounded-full hover:text-[#FDBA57] hover:border-[#FDBA57] transition"
-                  >
-                    <FaXTwitter size={14} />
-                  </a>
-                  <a
-                    href="#"
-                    className="border border-white p-2 rounded-full hover:text-[#FDBA57] hover:border-[#FDBA57] transition"
-                  >
-                    <FaInstagram size={14} />
-                  </a>
+                {/* Social Icons and Divider */}
+                <div className="mb-10">
+                  <div className="flex justify-center space-x-4 mb-6">
+                    <a
+                      href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border border-white p-2 rounded-full hover:text-[#FDBA57] hover:border-[#FDBA57] transition"
+                    >
+                      <FaFacebookF size={14} />
+                    </a>
+                  </div>
+
+                  {/* Full-width divider ignoring padding */}
+                  <div className="w-screen relative left-1/2 right-1/2 -translate-x-1/2 border-t border-gray-500 opacity-30" />
                 </div>
 
                 {/* Contact Details */}
-                <div className="space-y-6 text-sm">
-                  <div className="flex items-center gap-4">
-                    <FaPhoneAlt className="text-[#FDBA57]" />
-                    <span>09955555312</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <FaEnvelope className="text-[#FDBA57]" />
-                    <span>etpbuilders@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <FaMapMarkerAlt className="text-[#FDBA57]" />
-                    <span>Calumpit, Bulacan, Philippines</span>
+                <div className="w-full max-w-2xl ml-auto">
+                  <div className="space-y-6 text-sm">
+                    <div className="flex  items-center gap-4">
+                      <FaPhoneAlt size={20} className="text-[#FDBA57]" />
+                      <a href="tel:09955555312" className="text-2xl hover:underline">
+                        0995 5555 312
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <FaEnvelope size={20} className="text-[#FDBA57]" />
+                      <a
+                        href="mailto:edwin_t_pagtalunan@yahoo.com"
+                        className="text-2xl hover:underline"
+                      >
+                        edwin_t_pagtalunan@yahoo.com
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <FaMapMarkerAlt size={20} className="text-[#FDBA57]" />
+                      <span className="text-2xl">Calumpit, Bulacan, Philippines</span>
+                    </div>
                   </div>
                 </div>
               </div>

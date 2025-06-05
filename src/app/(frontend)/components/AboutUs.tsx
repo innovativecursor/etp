@@ -11,7 +11,8 @@ import checkIcon from '../public/assets/AboutUsAssets/tick_box.png'
 const AboutUs = () => {
   return (
     <section
-      className="py-28 px-6 md:px-20 relative overflow-hidden"
+      id="aboutus"
+      className="py-28 px-6 xl:px-20 relative overflow-hidden"
       style={{
         background:
           'linear-gradient(270.29deg, rgba(255, 255, 255, 0) 0.25%, rgba(244, 179, 36, 0.54) 99.75%)',
@@ -19,7 +20,7 @@ const AboutUs = () => {
     >
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-20">
         {/* Left Side - Images */}
-        <div className="hidden md:flex w-full md:w-7/12 flex-col items-center md:pl-4 gap-2">
+        <div className="hidden xl:flex w-full md:w-7/12 flex-col items-center md:pl-4 gap-2">
           {/* Top Centered Image - made wider */}
           <div className="w-[80%] h-[290px] relative overflow-hidden shadow-lg z-10">
             <Image src={about1} alt="Modern House" fill className="object-cover" />

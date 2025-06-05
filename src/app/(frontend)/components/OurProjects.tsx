@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
 import project1 from '../public/assets/ProjectsAssets/project_1.png'
@@ -62,6 +62,10 @@ const OurProjects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Works')
   const [index, setIndex] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
+  const isDown = useRef(false)
 
   const filtered =
     selectedCategory === 'All Works'
@@ -80,7 +84,16 @@ const OurProjects = () => {
     window.addEventListener('resize', updateCardsPerView)
     return () => window.removeEventListener('resize', updateCardsPerView)
   }, [])
+  useEffect(() => {
+    const slider = sliderRef.current
+    if (!slider) return
 
+    const scrollAmount = slider.scrollWidth / Math.ceil(filtered.length / cardsPerView)
+    slider.scrollTo({
+      left: index * scrollAmount,
+      behavior: 'smooth',
+    })
+  }, [index, cardsPerView, filtered.length])
   const nextSlide = () => {
     const maxIndex = Math.ceil(filtered.length / cardsPerView) - 1
     if (index < maxIndex) {
@@ -94,13 +107,56 @@ const OurProjects = () => {
     }
   }
 
+  // Mouse dragging events
+  useEffect(() => {
+    const slider = sliderRef.current
+    if (!slider) return
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isDown.current = true
+      slider.classList.add('cursor-grabbing')
+      startX.current = e.pageX - slider.offsetLeft
+      scrollLeft.current = slider.scrollLeft
+    }
+
+    const handleMouseLeave = () => {
+      isDown.current = false
+      slider.classList.remove('cursor-grabbing')
+    }
+
+    const handleMouseUp = () => {
+      isDown.current = false
+      slider.classList.remove('cursor-grabbing')
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDown.current) return
+      e.preventDefault()
+      const x = e.pageX - slider.offsetLeft
+      const walk = (x - startX.current) * 1.5 // scroll-fast
+      slider.scrollLeft = scrollLeft.current - walk
+    }
+
+    slider.addEventListener('mousedown', handleMouseDown)
+    slider.addEventListener('mouseleave', handleMouseLeave)
+    slider.addEventListener('mouseup', handleMouseUp)
+    slider.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      slider.removeEventListener('mousedown', handleMouseDown)
+      slider.removeEventListener('mouseleave', handleMouseLeave)
+      slider.removeEventListener('mouseup', handleMouseUp)
+      slider.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [filtered, cardsPerView])
+
   return (
-    <section className="bg-black text-white py-16 px-6 relative">
+    <section id="projects" className="bg-black text-white py-16 px-6 relative">
       <div className="max-w-7xl mx-auto">
         {/* Heading and Category Filters */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
           <h2 className="text-[54px] font-semibold">Our Projects</h2>
-          <div className="mt-4 overflow-x-auto sm:mt-0 sm:overflow-x-visible">
+          <div className="mt-4 overflow-x-auto sm:mt-0">
             <div className="flex gap-6 text-sm relative min-w-max">
               {categories.map((cat) => (
                 <button
@@ -129,75 +185,66 @@ const OurProjects = () => {
         </div>
 
         {/* Swiper Cards */}
-        <div className="overflow-hidden relative">
+        <div className="overflow-hidden relative cursor-grab">
           <div
-            className="flex gap-6 transition-transform duration-500 ease-in-out"
-            style={{
-              width: `${(filtered.length * 100) / cardsPerView}%`,
-              transform: `translateX(-${(index * 100) / filtered.length}%)`,
-            }}
+            ref={sliderRef}
+            className="overflow-x-auto scroll-smooth relative cursor-grab"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.title + i}
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="relative h-[420px] rounded-md overflow-hidden shadow-lg min-w-[100%] sm:min-w-[50%] lg:min-w-[20%]"
-              >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="rounded-md"
-                />
-                <div
-                  className="absolute inset-0 rounded-md"
+            <div className="flex gap-6 cursor-grab" style={{ minWidth: 'max-content' }}>
+              {filtered.map((project, i) => (
+                <motion.div
+                  key={project.title + i}
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="relative h-[420px] rounded-md overflow-hidden shadow-lg"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 50.08%, #000000 100%)',
+                    width: `${100 / cardsPerView}%`,
+                    minWidth: `${100 / cardsPerView}%`,
                   }}
-                />
-                <div className="absolute bottom-4 left-4 z-10 text-left">
-                  <h3 className="text-lg font-semibold text-white">{project.title}</h3>
-                  <p className="text-sm text-gray-300">{project.location}</p>
-                </div>
-              </motion.div>
-            ))}
+                >
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div
+                    className="absolute inset-0 rounded-md"
+                    style={{
+                      background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 50.08%, #000000 100%)',
+                    }}
+                  />
+                  <div className="absolute bottom-4 left-4 z-10 text-left">
+                    <h3 className="text-lg font-semibold text-white">{project.title}</h3>
+                    <p className="text-sm text-gray-300">{project.location}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Navigation Dots */}
-        <div className="flex justify-center items-center mt-6 gap-2">
+        <div className="flex flex-wrap justify-center items-center mt-6 gap-4">
           {Array.from({ length: Math.ceil(filtered.length / cardsPerView) }).map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`
-      w-3 h-3 rounded-full border
-      ${i === index ? 'bg-white border-white ring-2 ring-yellow-400' : 'border-gray-400 ring-2 ring-gray-600'}
-    `}
-            />
+              onMouseEnter={() => setIndex(i)}
+              className={`w-3 h-3 flex items-center justify-center rounded-full transition-all duration-300 ${
+                i === index ? 'w-5 h-5 border-2 border-white' : 'border border-red-400'
+              }`}
+            >
+              <div
+                className={`rounded-full transition-all duration-300 ${
+                  i === index ? 'w-2 h-2 bg-white' : 'w-3 h-3 bg-amber-500'
+                }`}
+              ></div>
+            </button>
           ))}
-        </div>
-
-        {/* Swiper Buttons */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-6 lg:left-12 z-20">
-          <button
-            onClick={prevSlide}
-            className="bg-white text-black p-3 rounded-full shadow hover:bg-yellow-400 transition"
-          >
-            <FaChevronLeft size={20} />
-          </button>
-        </div>
-        <div className="absolute top-1/2 -translate-y-1/2 right-6 lg:right-12 z-20">
-          <button
-            onClick={nextSlide}
-            className="bg-white text-black p-3 rounded-full shadow hover:bg-yellow-400 transition"
-          >
-            <FaChevronRight size={20} />
-          </button>
         </div>
 
         {/* CTA */}
