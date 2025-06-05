@@ -133,8 +133,6 @@ const DesignBuildServices = () => {
       <div className="bg-[#fffaf0] py-20 px-6 overflow-x-auto">
         <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap overflow-x-auto">
           {(dynamicServices || services)
-            .slice()
-            .reverse()
             .map((service, index) => {
               const shouldFlip = ['01', '03', '05'].includes(service.number)
               return (
