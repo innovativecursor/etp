@@ -134,7 +134,7 @@ const DesignBuildServices = () => {
 
       {/* Cards */}
       <div className="bg-[#fffaf0] py-20 px-6 overflow-x-auto">
-        <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap overflow-x-auto">
+        <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap">
           {!dynamicServices
             ? Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
             : dynamicServices
