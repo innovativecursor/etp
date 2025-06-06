@@ -5,18 +5,46 @@ import { motion, AnimatePresence } from 'framer-motion'
 import faqImage1 from '../public/assets/TestimonialsAssets/image_two.png'
 import Image from 'next/image'
 import { fetchFAQs } from '../utils/api'
+
 interface FAQ {
   id: string
   question: string
   answer: string
 }
 
+// Animation variants
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+}
+
+const leftSectionVariants = {
+  hidden: { opacity: 0, x: -100 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+}
+
+const rightSectionVariants = {
+  hidden: { opacity: 0, x: 100 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+}
+
 export default function FAQSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(1)
   const [faqs, setFaqs] = useState<FAQ[]>([])
+
   const toggleFAQ = (index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index))
   }
+
   useEffect(() => {
     const getFAQs = async () => {
       try {
@@ -29,6 +57,7 @@ export default function FAQSection() {
 
     getFAQs()
   }, [])
+
   return (
     <section
       className="flex items-center justify-center px-6 py-10 md:p-20"
@@ -39,7 +68,13 @@ export default function FAQSection() {
     >
       <div className="max-w-7xl w-full flex flex-col justify-center md:flex-row gap-20">
         {/* Left Side */}
-        <div className="flex flex-col items-center">
+        <motion.div
+          className="flex flex-col items-center"
+          variants={leftSectionVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <h2 className="text-4xl font-bold text-center md:text-left leading-tight mb-6">
             Frequently Asked <br /> Questions
           </h2>
@@ -50,23 +85,38 @@ export default function FAQSection() {
               Contact Us!
             </a>
           </p>
-        </div>
+        </motion.div>
 
         {/* Right Side */}
-
-        <div className="flex flex-col items-start max-w-xl mt-10 ">
-          {' '}
-          {/* <-- Add mt-10 here */}
+        <motion.div
+          className="flex flex-col items-start max-w-xl mt-10"
+          variants={rightSectionVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <p className="mb-6 text-gray-600">
             Explore our FAQs for quick insights and detailed explanations. Still need help? Feel
             free to reach out directly!
           </p>
-          <div className="space-y-4 w-full mt-10">
+
+          {/* FAQ Animated List */}
+          <motion.div
+            className="space-y-4 w-full mt-10"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.3 }}
+          >
             {faqs
               .slice()
               .reverse()
               .map((faq, index) => (
-                <div key={index} className="border-b border-[#182022] pb-3 w-full">
+                <motion.div
+                  key={index}
+                  className="border-b border-[#182022] pb-3 w-full"
+                  variants={itemVariants}
+                >
                   <div
                     className="flex justify-between items-center cursor-pointer"
                     onClick={() => toggleFAQ(index)}
@@ -88,10 +138,10 @@ export default function FAQSection() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
