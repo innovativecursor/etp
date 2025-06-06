@@ -58,7 +58,7 @@ export default function FAQSection() {
     getFAQs()
   }, [])
 
-  return (
+  return faqs.length ? (
     <section
       className="flex items-center justify-center px-6 py-10 md:p-20"
       style={{
@@ -144,5 +144,5 @@ export default function FAQSection() {
         </motion.div>
       </div>
     </section>
-  )
+  ) : null
 }

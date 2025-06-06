@@ -124,7 +124,7 @@ const OurProjects = () => {
     }
   }, [filtered, cardsPerView])
 
-  return (
+  return projectsData.length ? (
     <section id="projects" className="bg-black text-white py-16 px-6 relative">
       <div className="max-w-7xl mx-auto">
         {/* Heading and Category Filters */}
@@ -254,7 +254,7 @@ const OurProjects = () => {
         </div>
       </div>
     </section>
-  )
+  ) : null
 }
 
 export default OurProjects

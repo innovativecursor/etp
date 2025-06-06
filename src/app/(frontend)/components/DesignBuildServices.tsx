@@ -122,7 +122,7 @@ const DesignBuildServices = () => {
       })
   }, [])
 
-  return (
+  return dynamicServices?.length ? (
     <section id="services">
       {/* Header */}
       <div className="bg-[#0D0B0A] py-12 text-center">
@@ -143,8 +143,12 @@ const DesignBuildServices = () => {
                 .map((service, index) => {
                   const shouldFlip = ['01', '03', '05'].includes(service.number)
                   return (
-                    <div
+                    <motion.div
                       key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: false, amount: 0.3 }}
+                      transition={{ delay: index * 0.15, duration: 0.5 }}
                       className="flex flex-col items-center min-w-[200px] max-w-[220px] text-center sm:min-w-[150px] sm:max-w-[180px] md:min-w-[180px] md:max-w-[200px]"
                     >
                       {/* Mobile View */}
@@ -206,7 +210,7 @@ const DesignBuildServices = () => {
                           </>
                         )}
                       </div>
-                    </div>
+                    </motion.div>
                   )
                 })}
         </div>
@@ -264,7 +268,7 @@ const DesignBuildServices = () => {
         )}
       </AnimatePresence>
     </section>
-  )
+  ) : null
 }
 
 export default DesignBuildServices
