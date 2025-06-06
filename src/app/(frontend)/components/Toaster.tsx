@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import iconImage from '../public/assets/etp_logo.png'
+import iconImage from '../public/assets/ToasterAssets/logo_toaster.png'
 
 export const showToast = (message: string, type: 'success' | 'error') => {
   const customIcon = (
