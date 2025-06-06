@@ -41,7 +41,18 @@ const Services: CollectionConfig = {
         {
           name: 'image',
           type: 'upload',
-          relationTo: 'media', // assuming you have a media collection
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'tagline',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'location',
+          type: 'text',
+          required: true,
         },
       ],
     },

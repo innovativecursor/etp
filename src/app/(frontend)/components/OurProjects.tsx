@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { fetchProjects } from '../utils/api'
 
@@ -13,17 +12,17 @@ const containerVariants = {
 }
 
 const OurProjects = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All Works')
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const [index, setIndex] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
-  const [projectsData, setProjectsData] = useState<any[]>([]) // fetched projects state
-  const categories = [...Array.from(new Set(projectsData.map((p) => p.category)))]
+  const [projectsData, setProjectsData] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
   const sliderRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const scrollLeft = useRef(0)
   const isDown = useRef(false)
 
-  // Fetch projects from API once on component mount
   useEffect(() => {
     const loadProjects = async () => {
       try {
@@ -31,17 +30,18 @@ const OurProjects = () => {
         setProjectsData(data)
       } catch (error) {
         console.error('Failed to fetch projects:', error)
+      } finally {
+        setLoading(false)
       }
     }
     loadProjects()
   }, [])
 
-  // Use only fetched projects data, no static fallback
   const projectsToUse = projectsData
+  const categories = [...Array.from(new Set(projectsData.map((p) => p.category)))]
 
-  // Filter projects by category
   const filtered =
-    selectedCategory === 'All Works'
+    selectedCategory === 'All'
       ? projectsToUse
       : projectsToUse.filter((p) => p.category === selectedCategory)
 
@@ -82,7 +82,6 @@ const OurProjects = () => {
     }
   }
 
-  // Mouse dragging event handlers (unchanged)
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
@@ -170,37 +169,53 @@ const OurProjects = () => {
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             <div className="flex gap-6 cursor-grab" style={{ minWidth: 'max-content' }}>
-              {filtered.map((project, i) => (
-                <motion.div
-                  key={project.title + i}
-                  variants={containerVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="relative h-[420px] rounded-md overflow-hidden shadow-lg"
-                  style={{
-                    width: `${100 / cardsPerView}%`,
-                    minWidth: `${100 / cardsPerView}%`,
-                  }}
-                >
-                  <Image
-                    src={project.images?.[0]?.image?.url || '/fallback.jpg'}
-                    alt={project.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div
-                    className="absolute inset-0 rounded-md"
-                    style={{
-                      background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 50.08%, #000000 100%)',
-                    }}
-                  />
-                  <div className="absolute bottom-4 left-4 z-10 text-left">
-                    <h3 className="text-lg font-semibold text-white">{project.title}</h3>
-                    <p className="text-sm text-gray-300">{project.location}</p>
-                  </div>
-                </motion.div>
-              ))}
+              {loading
+                ? Array.from({ length: cardsPerView }).map((_, i) => (
+                    <div
+                      key={`skeleton-${i}`}
+                      className="h-[420px] bg-gray-800 animate-pulse rounded-md shadow-lg"
+                      style={{
+                        width: `${100 / cardsPerView}%`,
+                        minWidth: `${100 / cardsPerView}%`,
+                      }}
+                    >
+                      <div className="w-full h-full relative">
+                        <div className="absolute inset-0 bg-gradient-to-b from-gray-700 via-gray-800 to-black opacity-70 rounded-md" />
+                      </div>
+                    </div>
+                  ))
+                : filtered.map((project, i) => (
+                    <motion.div
+                      key={project.title + i}
+                      variants={containerVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      className="relative h-[420px] rounded-md overflow-hidden shadow-lg"
+                      style={{
+                        width: `${100 / cardsPerView}%`,
+                        minWidth: `${100 / cardsPerView}%`,
+                      }}
+                    >
+                      <Image
+                        src={project.images?.[0]?.image?.url || '/fallback.jpg'}
+                        alt={project.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div
+                        className="absolute inset-0 rounded-md"
+                        style={{
+                          background:
+                            'linear-gradient(180deg, rgba(0, 0, 0, 0) 50.08%, #000000 100%)',
+                        }}
+                      />
+                      <div className="absolute bottom-4 left-4 z-10 text-left">
+                        <h3 className="text-lg font-semibold text-white">{project.title}</h3>
+                        <p className="text-sm text-gray-300">{project.location}</p>
+                      </div>
+                    </motion.div>
+                  ))}
             </div>
           </div>
         </div>

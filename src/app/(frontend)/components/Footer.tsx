@@ -24,7 +24,7 @@ const Footer = () => {
         </div>
 
         {/* Column 2: Links */}
-        <div className="space-y-3 flex flex-col ml-0 lg:items-center">
+        <div className="space-y-3 flex flex-col">
           <h3 className="font-semibold text-base">Link</h3>
           <ul className="space-y-2 text-gray-800 ">
             <li>
@@ -94,12 +94,12 @@ const Footer = () => {
             © 2025 etpbuilders. All rights reserved/ Designed & Developed by{' '}
             <Image
               src={innocursor}
-              className="mr-1 ml-2"
+              className="mr-1 ml-1"
               width={15}
               height={15}
               alt="Innovative Cursor Logo"
             />
-            <span className="text-black ml-3"> Innovative Cursor</span>
+            <span className="text-black"> Innovative Cursor</span>
           </p>
           <div className="space-x-2 pt-2 md:pt-0">
             <a href="#" className="hover:underline">

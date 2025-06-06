@@ -115,7 +115,7 @@ const ContactSection = () => {
                 <div className="space-y-6 text-sm">
                   <div className="flex items-center gap-4">
                     <FaPhoneAlt size={20} className="text-[#FDBA57]" />
-                    <a href="tel:09955555312" className="text-2xl hover:underline">
+                    <a href="tel:09955555312" className="text-xl hover:underline">
                       0995 5555 312
                     </a>
                   </div>
