@@ -9,6 +9,7 @@ import { LuWaves } from 'react-icons/lu'
 import project1 from '../public/assets/ProjectsAssets/project_1.png'
 import project2 from '../public/assets/ProjectsAssets/project_2.png'
 import { fetchServices } from '../utils/api'
+import SkeletonCard from './SkeletonCard'
 // ⬅️ adjust the path if needed
 
 type Service = {
@@ -17,6 +18,7 @@ type Service = {
   description: string
   number: string
   images: (StaticImageData | string)[]
+  location?: string
 }
 
 const services: Service[] = [
@@ -111,6 +113,7 @@ const DesignBuildServices = () => {
           description: item.description,
           number: item.number,
           images: item.images.map((img: any) => img.image?.url || img.url),
+          location: item.location || '',
         }))
         setDynamicServices(mapped)
       })
@@ -119,7 +122,7 @@ const DesignBuildServices = () => {
       })
   }, [])
 
-  return (
+  return dynamicServices?.length ? (
     <section id="services">
       {/* Header */}
       <div className="bg-[#0D0B0A] py-12 text-center">
@@ -131,38 +134,25 @@ const DesignBuildServices = () => {
 
       {/* Cards */}
       <div className="bg-[#fffaf0] py-20 px-6 overflow-x-auto">
-        <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap overflow-x-auto">
-          {(dynamicServices || services)
-            .map((service, index) => {
-              const shouldFlip = ['01', '03', '05'].includes(service.number)
-              return (
-                <div
-                  key={index}
-                  className="flex flex-col items-center min-w-[200px] max-w-[220px] text-center sm:min-w-[150px] sm:max-w-[180px] md:min-w-[180px] md:max-w-[200px]"
-                >
-                  {/* Mobile View */}
-                  <div className="block sm:hidden flex flex-col items-center text-center">
-                    <span className="text-[54px] font-extrabold text-[#FFE8B6]">
-                      {service.number}
-                    </span>
-                    <div
-                      onClick={() => {
-                        setSelectedService(service)
-                        setCurrentIndex(0)
-                      }}
-                      className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
+        <div className="flex flex-nowrap items-center justify-start gap-12 max-w-[1400px] mx-auto flex-col sm:flex-row sm:flex-wrap sm:justify-center md:justify-start md:flex-nowrap">
+          {!dynamicServices
+            ? Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
+            : dynamicServices
+                .slice()
+                .reverse()
+                .map((service, index) => {
+                  const shouldFlip = ['01', '03', '05'].includes(service.number)
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: false, amount: 0.3 }}
+                      transition={{ delay: index * 0.15, duration: 0.5 }}
+                      className="flex flex-col items-center min-w-[200px] max-w-[220px] text-center sm:min-w-[150px] sm:max-w-[180px] md:min-w-[180px] md:max-w-[200px]"
                     >
-                      <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
-                      <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
-                    </div>
-                    <h3 className="text-md font-bold mt-2">{service.title}</h3>
-                    <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                  </div>
-
-                  {/* Desktop View */}
-                  <div className="hidden md:flex flex-col items-center text-center">
-                    {!shouldFlip ? (
-                      <>
+                      {/* Mobile View */}
+                      <div className="block sm:hidden flex flex-col items-center text-center">
                         <span className="text-[54px] font-extrabold text-[#FFE8B6]">
                           {service.number}
                         </span>
@@ -176,32 +166,53 @@ const DesignBuildServices = () => {
                           <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
                           <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
                         </div>
-                        <h3 className="text-md font-bold">{service.title}</h3>
-                        <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                      </>
-                    ) : (
-                      <>
                         <h3 className="text-md font-bold mt-2">{service.title}</h3>
                         <p className="text-sm text-gray-700 mt-2">{service.description}</p>
-                        <div
-                          onClick={() => {
-                            setSelectedService(service)
-                            setCurrentIndex(0)
-                          }}
-                          className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center rotate-180 cursor-pointer"
-                        >
-                          <div className="z-10 text-[#2d2d2e] rotate-180">{service.icon}</div>
-                          <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
-                        </div>
-                        <span className="text-[54px] font-extrabold text-[#FFE8B6]">
-                          {service.number}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+                      </div>
+
+                      {/* Desktop View */}
+                      <div className="hidden md:flex flex-col items-center text-center">
+                        {!shouldFlip ? (
+                          <>
+                            <span className="text-[54px] font-extrabold text-[#FFE8B6]">
+                              {service.number}
+                            </span>
+                            <div
+                              onClick={() => {
+                                setSelectedService(service)
+                                setCurrentIndex(0)
+                              }}
+                              className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center cursor-pointer"
+                            >
+                              <div className="z-10 text-[#2d2d2e]">{service.icon}</div>
+                              <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+                            </div>
+                            <h3 className="text-md font-bold">{service.title}</h3>
+                            <p className="text-sm text-gray-700 mt-2">{service.description}</p>
+                          </>
+                        ) : (
+                          <>
+                            <h3 className="text-md font-bold mt-2">{service.title}</h3>
+                            <p className="text-sm text-gray-700 mt-2">{service.description}</p>
+                            <div
+                              onClick={() => {
+                                setSelectedService(service)
+                                setCurrentIndex(0)
+                              }}
+                              className="relative w-[96px] h-[96px] my-3 rounded-t-full rounded-b-md bg-white shadow-md flex items-center justify-center rotate-180 cursor-pointer"
+                            >
+                              <div className="z-10 text-[#2d2d2e] rotate-180">{service.icon}</div>
+                              <div className="absolute bottom-0 left-0 w-full h-[5px] bg-[#fcb92c]" />
+                            </div>
+                            <span className="text-[54px] font-extrabold text-[#FFE8B6]">
+                              {service.number}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </motion.div>
+                  )
+                })}
         </div>
       </div>
 
@@ -209,50 +220,55 @@ const DesignBuildServices = () => {
       <AnimatePresence>
         {selectedService && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedService(null)}
           >
+            {/* Prev Button */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-12 sm:left-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
+            >
+              <FaArrowLeft size={20} />
+            </button>
+
+            {/* Modal Image Card */}
             <motion.div
-              className="relative bg-white p-6 rounded-xl max-w-3xl w-full max-h-[80vh] overflow-hidden"
+              className="relative w-[280px] sm:w-[350px] aspect-[3/4] bg-black overflow-hidden rounded-lg shadow-lg"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl font-semibold mb-4 text-[#2d2d2e] text-center">
-                {selectedService.title}
-              </h2>
-
-              <div className="relative w-full h-[300px] sm:h-[400px] rounded overflow-hidden">
-                {/* <-- FIXED HERE: Use the image URL string directly --> */}
-                <Image
-                  src={selectedService.images[currentIndex]}
-                  alt={`${selectedService.title} image`}
-                  fill
-                  className="object-cover rounded h-full"
-                />
-                <button
-                  onClick={handlePrev}
-                  className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-                >
-                  <FaArrowLeft size={20} />
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-                >
-                  <FaArrowRight size={20} />
-                </button>
+              <Image
+                src={selectedService.images[currentIndex] || '/fallback.jpg'}
+                alt={`${selectedService.title} image`}
+                fill
+                className="object-cover"
+              />
+              {/* Bottom Overlay Text */}
+              <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
+                <h3 className="text-base font-medium">{selectedService.title}</h3>
+                <p className="text-sm text-white/80">
+                  {selectedService.location || 'Tagline or Location'}
+                </p>
               </div>
             </motion.div>
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              className="absolute right-12 sm:right-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
+            >
+              <FaArrowRight size={20} />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
     </section>
-  )
+  ) : null
 }
 
 export default DesignBuildServices

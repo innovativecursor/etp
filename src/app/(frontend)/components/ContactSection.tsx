@@ -44,7 +44,13 @@ const ContactSection = () => {
         <div className="container mx-auto overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 ">
             {/* Left Side: Contact Form - Orange BG */}
-            <div className="bg-[#FDBA57] px-6 md:px-14 py-16 flex items-center">
+            <motion.div
+              className="bg-[#FDBA57] px-6 md:px-14 py-16 flex items-center"
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: false, amount: 0.3 }}
+            >
               <div className="w-full max-w-2xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-2">Let’s Connect</h2>
                 <p className="text-sm md:text-[12px] mb-8 text-[#2B2B2B]">
@@ -93,10 +99,16 @@ const ContactSection = () => {
                   </div>
                 </form>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Side: Contact Info - Black BG */}
-            <div className="bg-black px-6 md:px-14 py-16 text-white flex flex-col justify-between">
+            <motion.div
+              className="bg-black px-6 md:px-14 py-16 text-white flex flex-col justify-between"
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: false, amount: 0.3 }}
+            >
               <div className="w-full max-w-2xl ml-auto">
                 <div className="mb-10">
                   <div className="flex justify-center space-x-4 mb-6">
@@ -109,13 +121,13 @@ const ContactSection = () => {
                       <FaFacebookF size={14} />
                     </a>
                   </div>
-                  <div className="w-screen relative left-1/2 right-1/2 -translate-x-1/2 border-t border-gray-500 opacity-30" />
+                  {/* <div className="w-screen relative left-1/2 right-1/2 -translate-x-1/2 border-t border-gray-500 opacity-30" /> */}
                 </div>
 
                 <div className="space-y-6 text-sm">
                   <div className="flex items-center gap-4">
                     <FaPhoneAlt size={20} className="text-[#FDBA57]" />
-                    <a href="tel:09955555312" className="text-2xl hover:underline">
+                    <a href="tel:09955555312" className="text-xl hover:underline">
                       0995 5555 312
                     </a>
                   </div>
@@ -134,7 +146,7 @@ const ContactSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>

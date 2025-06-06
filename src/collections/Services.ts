@@ -1,9 +1,13 @@
 import { CollectionConfig } from 'payload'
 
-const Services: CollectionConfig = {
+const ServicesETP: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'title',
+  },
+  access: {
+    create: () => true,
+    read: () => true,
   },
   fields: [
     {
@@ -41,11 +45,22 @@ const Services: CollectionConfig = {
         {
           name: 'image',
           type: 'upload',
-          relationTo: 'media', // assuming you have a media collection
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'tagline',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'location',
+          type: 'text',
+          required: true,
         },
       ],
     },
   ],
 }
 
-export default Services
+export default ServicesETP

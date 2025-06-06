@@ -15,6 +15,7 @@ import Projects from './collections/Projects'
 import Testimonials from './collections/Testimonials'
 import Services from './collections/Services'
 import icon from '../public/favicon.ico'
+import ServicesETP from './collections/Services'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -40,7 +41,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, ContactUsForm, FAQs, Projects, Testimonials, Services],
+  collections: [Users, Media, ContactUsForm, FAQs, Projects, Testimonials, ServicesETP],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

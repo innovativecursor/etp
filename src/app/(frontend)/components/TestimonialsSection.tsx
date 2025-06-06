@@ -31,7 +31,7 @@ const TestimonialSection = () => {
     }
   }
 
-  if (!testimonial) return null // Or a loading spinner
+  if (!testimonials.length) return null // Or a loading spinner
 
   return (
     <section className="relative text-white py-30 text-center overflow-hidden">
