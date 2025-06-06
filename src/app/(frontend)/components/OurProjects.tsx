@@ -165,8 +165,8 @@ const OurProjects = () => {
         <div className="overflow-hidden relative cursor-grab">
           <div
             ref={sliderRef}
-            className="overflow-x-auto scroll-smooth relative cursor-grab"
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            className="overflow-x-scroll no-scrollbar relative cursor-grab max-h-[420px]"
+            style={{ WebkitOverflowScrolling: 'touch', overflowY: 'hidden' }}
           >
             <div className="flex gap-6 cursor-grab" style={{ minWidth: 'max-content' }}>
               {loading
