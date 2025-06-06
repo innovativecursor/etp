@@ -81,7 +81,7 @@ export default function FAQSection() {
           <Image src={faqImage1} alt="construction" className="object-cover" />
           <p className="mt-6 text-sm text-gray-800">
             Still Have Questions?{' '}
-            <a className="text-[#F4B324] font-semibold" href="#">
+            <a className="text-[#F4B324] font-semibold" href="#contactus">
               Contact Us!
             </a>
           </p>

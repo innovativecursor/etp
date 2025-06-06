@@ -84,6 +84,10 @@ const AboutUs = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
             viewport={{ once: false, amount: 0.3 }}
+            onClick={() => {
+              const section = document.getElementById('projects')
+              section?.scrollIntoView({ behavior: 'smooth' })
+            }}
           >
             Learn More
           </motion.button>
