@@ -11,10 +11,11 @@ export const Media: CollectionConfig = {
   },
 
   upload: {
+    // staticDir: path.resolve('/Users/datatype/Downloads/'), // For MacOS
     staticDir: path.resolve('/var/www/etp-media'), // For linux
     // staticDir: path.resolve('F:\Shawn\pbrs-uploads'), // For windows
     // staticDir: 'media', // Folder where files will be stored
-    //  staticURL: '/media/images',
+    // staticURL: '/media/images',
     mimeTypes: ['image/*'], // Allow images & videos
   },
   fields: [],

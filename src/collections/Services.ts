@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-const Services: CollectionConfig = {
+const ServicesETP: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'title',
@@ -63,4 +63,4 @@ const Services: CollectionConfig = {
   ],
 }
 
-export default Services
+export default ServicesETP
