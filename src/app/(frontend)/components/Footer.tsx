@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t border-yellow-400 text-black text-sm ">
       {/* Top Section */}
-      <div className="container mx-auto px-6 md:px-20 py-12 grid grid-cols-1 md:grid-cols-4 gap-x-12">
+      <div className="container mx-auto px-6 md:px-20 py-12 grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-0">
         {/* Column 1: Logo and Description */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
@@ -24,10 +24,10 @@ const Footer = () => {
         </div>
 
         {/* Column 2: Links */}
-        <div className="space-y-3 flex flex-col items-start md:ml-25">
+        <div className="space-y-3 flex flex-col items-start md:ml-30">
           <h3 className="font-semibold text-base">Link</h3>
           <ul className="space-y-2 text-gray-800 ">
-            <li> 
+            <li>
               <Link href="#home">Home</Link>
             </li>
             <li>
@@ -90,25 +90,26 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-yellow-300 w-full">
         <div className="container mx-auto px-6 md:px-20 text-center md:text-left text-gray-700 py-4 flex flex-col md:flex-row items-center justify-between text-xs">
-          <p className="flex items-center">
-            © 2025 etpbuilders. All rights reserved/ Designed & Developed by{' '}
-            <Image
-              src={innocursor}
-              className="mr-1 ml-1"
-              width={15}
-              height={15}
-              alt="Innovative Cursor Logo"
-            />
-            <span className="text-black"> Innovative Cursor</span>
-          </p>
+          <p className="flex items-center">© 2025 etpbuilders. All rights reserved </p>
           <div className="space-x-2 pt-2 md:pt-0">
-            <a href="#" className="hover:underline">
+            <p className="flex items-center">
+              Designed & Developed by
+              <Image
+                src={innocursor}
+                className="mr-1 ml-1"
+                width={15}
+                height={15}
+                alt="Innovative Cursor Logo"
+              />
+              <span className="text-black"> Innovative Cursor</span>
+            </p>
+            {/* <a href="#" className="hover:underline">
               Privacy Policy
             </a>
             |
             <a href="#" className="hover:underline">
               Terms of Service
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

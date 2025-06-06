@@ -52,11 +52,13 @@ const ServicesETP: CollectionConfig = {
           name: 'tagline',
           type: 'text',
           required: true,
+          defaultValue: 'Default tagline',
         },
         {
           name: 'location',
           type: 'text',
           required: true,
+          defaultValue: 'Default tagline',
         },
       ],
     },

@@ -13,9 +13,9 @@ import ContactUsForm from './collections/ContactUs'
 import FAQs from './collections/FAQ'
 import Projects from './collections/Projects'
 import Testimonials from './collections/Testimonials'
-import Services from './collections/Services'
+
 import icon from '../public/favicon.ico'
-import ServicesETP from './collections/Services'
+import ServicesETP from './collections/ServicesETP'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
