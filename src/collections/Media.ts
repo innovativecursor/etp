@@ -9,6 +9,7 @@ export const Media: CollectionConfig = {
   admin: {
     hidden: true,
   },
+
   upload: {
     staticDir: path.resolve('/var/www/etp-media'), // For linux
     // staticDir: path.resolve('F:\Shawn\pbrs-uploads'), // For windows

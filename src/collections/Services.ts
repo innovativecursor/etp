@@ -5,6 +5,10 @@ const Services: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  access: {
+    create: () => true,
+    read: () => true,
+  },
   fields: [
     {
       name: 'number',

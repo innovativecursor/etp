@@ -2,6 +2,10 @@ import { CollectionConfig } from 'payload'
 
 const Projects: CollectionConfig = {
   slug: 'projects',
+  access: {
+    create: () => true,
+    read: () => true,
+  },
   fields: [
     {
       name: 'title',

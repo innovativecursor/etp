@@ -7,6 +7,10 @@ const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
+  access: {
+    create: () => true,
+    read: () => true,
+  },
   fields: [
     {
       name: 'name',
