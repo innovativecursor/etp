@@ -9,9 +9,9 @@ import innocursor from '../public/assets/FooterAssets/innocursor.svg'
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-yellow-400 text-black text-sm">
+    <footer className="bg-white border-t border-yellow-400 text-black text-sm ">
       {/* Top Section */}
-      <div className="container mx-auto px-6 md:px-20 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="container mx-auto px-6 md:px-20 py-12 grid grid-cols-1 md:grid-cols-4 gap-x-12">
         {/* Column 1: Logo and Description */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
@@ -24,10 +24,10 @@ const Footer = () => {
         </div>
 
         {/* Column 2: Links */}
-        <div className="space-y-3 flex flex-col ml-0 lg:items-center">
+        <div className="space-y-3 flex flex-col items-start md:ml-25">
           <h3 className="font-semibold text-base">Link</h3>
           <ul className="space-y-2 text-gray-800 ">
-            <li>
+            <li> 
               <Link href="#home">Home</Link>
             </li>
             <li>
