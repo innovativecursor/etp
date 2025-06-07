@@ -27,14 +27,10 @@ const itemVariants = {
   show: { opacity: 1, y: 0 },
 }
 
-const leftSectionVariants = {
-  hidden: { opacity: 0, x: -100 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-}
-
-const rightSectionVariants = {
-  hidden: { opacity: 0, x: 100 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+// Updated fade-only variants (replacing x-axis movement)
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6 } },
 }
 
 export default function FAQSection() {
@@ -60,26 +56,30 @@ export default function FAQSection() {
 
   return faqs.length ? (
     <section
-      className="flex items-center justify-center px-6 py-10 md:p-20"
+      className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-12 md:py-16 md:px-12 lg:px-20"
       style={{
         background:
           'linear-gradient(270.26deg, rgba(255, 255, 255, 0) 0.23%, rgba(255, 208, 104, 0.74) 99.77%)',
       }}
     >
-      <div className="max-w-7xl w-full flex flex-col justify-center md:flex-row gap-20">
+      <div className="max-w-7xl w-full flex flex-col md:flex-row justify-center gap-12 md:gap-20">
         {/* Left Side */}
         <motion.div
           className="flex flex-col items-center"
-          variants={leftSectionVariants}
+          variants={fadeInVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: false, amount: 0.3 }}
         >
-          <h2 className="text-4xl font-bold text-center md:text-left leading-tight mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center md:text-left leading-snug mb-4 md:mb-6">
             Frequently Asked <br /> Questions
           </h2>
-          <Image src={faqImage1} alt="construction" className="object-cover" />
-          <p className="mt-6 text-sm text-gray-800">
+          <Image
+            src={faqImage1}
+            alt="construction"
+            className="object-cover w-full max-w-xs sm:max-w-sm md:max-w-md"
+          />
+          <p className="mt-4 sm:mt-6 text-sm text-gray-800 text-center md:text-left">
             Still Have Questions?{' '}
             <a className="text-[#F4B324] font-semibold" href="#contactus">
               Contact Us!
@@ -89,20 +89,20 @@ export default function FAQSection() {
 
         {/* Right Side */}
         <motion.div
-          className="flex flex-col items-start max-w-xl mt-10"
-          variants={rightSectionVariants}
+          className="flex flex-col items-start w-full md:max-w-xl mt-10 px-1 sm:px-2"
+          variants={fadeInVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: false, amount: 0.3 }}
         >
-          <p className="mb-6 text-gray-600">
+          <p className="mb-6 text-gray-600 text-sm sm:text-base">
             Explore our FAQs for quick insights and detailed explanations. Still need help? Feel
             free to reach out directly!
           </p>
 
           {/* FAQ Animated List */}
           <motion.div
-            className="space-y-4 w-full mt-10"
+            className="space-y-4 w-full mt-6 sm:mt-8 md:mt-10"
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
