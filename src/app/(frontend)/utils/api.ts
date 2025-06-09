@@ -116,3 +116,48 @@ export const fetchServices = async () => {
     throw error
   }
 }
+
+export const fetchHeroSection = async () => {
+  try {
+    const response = await fetch(`/api/herosection`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Backend error response:', data)
+      throw new Error(data.message || `HTTP error! Status: ${response.status}`)
+    }
+
+    return data.docs?.[0] || null
+  } catch (error) {
+    console.error('Error fetching Hero Section:', error)
+    throw error
+  }
+}
+export const fetchAboutUs = async () => {
+  try {
+    const response = await fetch(`/api/aboutus`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Backend error response:', data)
+      throw new Error(data.message || `HTTP error! Status: ${response.status}`)
+    }
+
+    return data.docs?.[0] || null
+  } catch (error) {
+    console.error('Error fetching About Us:', error)
+    throw error
+  }
+}

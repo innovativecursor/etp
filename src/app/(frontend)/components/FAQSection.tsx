@@ -96,7 +96,7 @@ export default function FAQSection() {
           viewport={{ once: false, amount: 0.3 }}
         >
           <p className="mb-6 text-gray-600 text-sm sm:text-base">
-            Explore our FAQs for quick insights and detailed explanations. Still need help? Feel
+            Explore our FAQs for quick insights and detailed explanations. <br/>Still need help? Feel
             free to reach out directly!
           </p>
 

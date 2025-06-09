@@ -1,14 +1,31 @@
 'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import about1 from '../public/assets/AboutUsAssets/about_image_1.png'
 import about2 from '../public/assets/AboutUsAssets/about_image_2.png'
 import about3 from '../public/assets/AboutUsAssets/about_image_3.png'
 import aboutbottom from '../public/assets/AboutUsAssets/about_bottom_image.png'
 import checkIcon from '../public/assets/AboutUsAssets/tick_box.png'
+import { fetchAboutUs } from '../utils/api'
 
 const AboutUs = () => {
+  const [aboutUsData, setAboutUsData] = useState<any>(null)
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await fetchAboutUs()
+        setAboutUsData(data)
+      } catch (error) {
+        console.error('Failed to fetch About Us data:', error)
+      }
+    }
+    getData()
+  }, [])
+
+  if (!aboutUsData) return null
+
   return (
     <section
       id="aboutus"
@@ -19,7 +36,7 @@ const AboutUs = () => {
       }}
     >
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-20">
-        {/* Left Side - Images */}
+        {/* Left Side - Static Images */}
         <motion.div
           className="hidden xl:flex w-full md:w-7/12 flex-col items-center md:pl-4 gap-2"
           initial={{ opacity: 0, x: -60 }}
@@ -40,7 +57,7 @@ const AboutUs = () => {
           </div>
         </motion.div>
 
-        {/* Right Side - Text Content */}
+        {/* Right Side - Dynamic Text Content */}
         <motion.div
           className="w-full md:w-7/12 max-w-xl mx-auto space-y-6 pt-6 md:pt-12"
           initial={{ opacity: 0, y: 40 }}
@@ -48,13 +65,9 @@ const AboutUs = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: false, amount: 0.3 }}
         >
-          <h2 className="text-3xl md:text-[54px] text-[#1C1613] font-bold">About Us</h2>
+          <h2 className="text-3xl md:text-[54px] text-[#1C1613] font-bold">{aboutUsData.title}</h2>
           <p className="text-[#7b7b7bcc] font-extralight text-[14px] mb-10 leading-relaxed">
-            We specialize in high-quality residential construction, offering tailored solutions that
-            turn your vision into reality. With years of experience and a commitment to excellence,
-            we focus on building not just homes, but lasting relationships with our clients. Whether
-            you’re building from the ground up, renovating, or adding a new extension, our skilled
-            team ensures every detail is handled with care and precision.
+            {aboutUsData.description}
           </p>
 
           <motion.div
@@ -64,18 +77,12 @@ const AboutUs = () => {
             transition={{ delay: 0.3, duration: 0.8 }}
             viewport={{ once: false, amount: 0.3 }}
           >
-            <div className="flex items-center gap-3">
-              <Image src={checkIcon} alt="Check" width={20} height={20} />
-              <span className="font-medium">Established Expertise</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Image src={checkIcon} alt="Check" width={20} height={20} />
-              <span className="font-medium">Client-Focused Approach</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Image src={checkIcon} alt="Check" width={20} height={20} />
-              <span className="font-medium">Comprehensive Solutions</span>
-            </div>
+            {aboutUsData.points?.map((item: any, index: number) => (
+              <div key={index} className="flex items-center gap-3">
+                <Image src={checkIcon} alt="Check" width={20} height={20} />
+                <span className="font-medium">{item.pointText}</span>
+              </div>
+            ))}
           </motion.div>
 
           <motion.button

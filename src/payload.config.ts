@@ -16,6 +16,8 @@ import Testimonials from './collections/Testimonials'
 
 import icon from '../public/favicon.ico'
 import ServicesETP from './collections/ServicesETP'
+import HeroSection from './collections/HeroSection'
+import AboutUs from './collections/AboutUs'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -41,7 +43,18 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, ContactUsForm, FAQs, Projects, Testimonials, ServicesETP],
+
+  collections: [
+    Users,
+    Media,
+    HeroSection,
+    AboutUs,
+    ServicesETP,
+    Projects,
+    Testimonials,
+    FAQs,
+    ContactUsForm,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -52,6 +65,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
+
   sharp,
   plugins: [
     payloadCloudPlugin(),

@@ -126,8 +126,10 @@ const DesignBuildServices = () => {
     <section id="services">
       {/* Header */}
       <div className="bg-[#0D0B0A] py-12 text-center">
-        <h2 className="text-[54px] font-semibold text-[#FEBC5D] mb-2">Design and Build Services</h2>
-        <p className="text-white !font-extralight text-[14px]">
+        <h2 className="md:text-[54px] text-[28px]  font-semibold text-[#FEBC5D] mb-2">
+          Design and Build Services
+        </h2>
+        <p className="text-white !font-extralight md:text-[14px] text-[12px] ">
           From Concept to Completion, We’ve Got You Covered
         </p>
       </div>

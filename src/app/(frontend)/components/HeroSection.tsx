@@ -1,10 +1,28 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import heroImage from '../public/assets/HeroAssets/hero_section_image.png'
+import { fetchHeroSection } from '../utils/api' // Adjust the path if needed
 
 const HeroSection = () => {
+  const [data, setData] = useState<any>(null)
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const res = await fetchHeroSection()
+        if (res && res.docs && res.docs.length > 0) {
+          setData(res.docs[0])
+        }
+      } catch (error) {
+        console.error('Error loading hero section:', error)
+      }
+    }
+
+    loadData()
+  }, [])
+
   return (
     <section className="relative h-[700px] md:h-[800px] overflow-hidden">
       <div className="container mx-auto flex flex-col md:flex-row items-center md:items-center justify-between h-full relative z-10">
@@ -23,9 +41,9 @@ const HeroSection = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             viewport={{ once: false, amount: 0.3 }}
           >
-            Building Your <br />
-            <span className="text-[#FEBC5D]">Dream Home</span> <br />
-            Starts Here
+            {data?.mainHeading || 'Building Your'} <br />
+            <span className="text-[#FEBC5D]">{data?.highlightedText || 'Dream Home'}</span> <br />
+            {data?.mainHeadingAfter || 'Starts Here'}
           </motion.h1>
 
           <motion.p
@@ -35,12 +53,16 @@ const HeroSection = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             viewport={{ once: false, amount: 0.3 }}
           >
-            Easily TAP into professional guidance for all your <br />
-            architectural and engineering needs.
+            {data?.subText || (
+              <>
+                Easily TAP into professional guidance for all your <br />
+                architectural and engineering needs.
+              </>
+            )}
           </motion.p>
 
           <a
-            href="https://www.facebook.com/messages/e2ee/t/9401150536657301"
+            href={data?.buttonLink || 'https://www.facebook.com/messages/e2ee/t/9401150536657301'}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -51,13 +73,13 @@ const HeroSection = () => {
               transition={{ delay: 0.6, duration: 0.5 }}
               viewport={{ once: false, amount: 0.3 }}
             >
-              Start Your Project Now
+              {data?.buttonText || 'Start Your Project Now'}
             </motion.button>
           </a>
         </motion.div>
       </div>
 
-      {/* Desktop Image (hidden on small devices) */}
+      {/* Desktop Image */}
       <motion.div
         className="hidden lg:block absolute top-0 right-0 h-full min-h-[700px] w-[53%]"
         initial={{ opacity: 0 }}
@@ -65,10 +87,16 @@ const HeroSection = () => {
         transition={{ delay: 0.6, duration: 1 }}
         viewport={{ once: false, amount: 0.2 }}
       >
-        <Image src={heroImage} alt="Modern Home" fill className="object-cover" priority />
+        <Image
+          src={data?.desktopImage?.url || heroImage}
+          alt="Modern Home"
+          fill
+          className="object-cover"
+          priority
+        />
       </motion.div>
 
-      {/* Mobile/Tablet Image (visible on sm/md) */}
+      {/* Mobile/Tablet Image */}
       <motion.div
         className="block sm:hidden md:hidden lg:hidden absolute bottom-0 right-0 w-72 h-72 opacity-80"
         initial={{ opacity: 0 }}
@@ -77,7 +105,7 @@ const HeroSection = () => {
         viewport={{ once: false, amount: 0.2 }}
       >
         <Image
-          src={heroImage}
+          src={data?.desktopImage?.url || heroImage}
           alt="Modern Home Mobile"
           fill
           className="object-cover shadow-md"

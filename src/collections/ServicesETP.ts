@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload'
+// ✅ adjust the path if needed
 
 const ServicesETP: CollectionConfig = {
   slug: 'services',
@@ -6,7 +7,14 @@ const ServicesETP: CollectionConfig = {
     useAsTitle: 'title',
   },
   access: {
-    create: () => true,
+    create: async ({ req: { payload } }) => {
+      const existing = await payload.find({
+        collection: 'services' as any, // ⛑️ This skips the TS error
+        limit: 0,
+      })
+
+      return existing.totalDocs < 6
+    },
     read: () => true,
   },
   fields: [
