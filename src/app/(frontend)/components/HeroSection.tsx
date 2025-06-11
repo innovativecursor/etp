@@ -86,20 +86,21 @@ const HeroSection = () => {
 
       {/* Desktop Image */}
       <motion.div
-        className="hidden lg:block absolute top-0 right-0 h-full min-h-[700px] w-[53%] overflow-visible max-w-none"
+        className="hidden lg:block absolute top-0 right-0 h-full min-h-[700px] w-[53%] overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 1 }}
         viewport={{ once: false, amount: 0.2 }}
       >
-        <Image
-          src={data?.desktopImage?.url || heroImage}
-          alt="Modern Home"
-          width={100}
-          height={100}
-          className="object-cover h-full"
-          priority
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={data?.desktopImage?.url || heroImage}
+            alt="Modern Home"
+            className="object-cover"
+            fill
+            priority
+          />
+        </div>
       </motion.div>
 
       {/* Mobile/Tablet Image */}
