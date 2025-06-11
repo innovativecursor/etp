@@ -133,7 +133,8 @@ export const fetchHeroSection = async () => {
       throw new Error(data.message || `HTTP error! Status: ${response.status}`)
     }
 
-    return data.docs?.[0] || null
+    // Return just the first document
+    return data?.docs?.[0] || null
   } catch (error) {
     console.error('Error fetching Hero Section:', error)
     throw error

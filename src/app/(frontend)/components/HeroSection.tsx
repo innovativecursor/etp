@@ -12,8 +12,9 @@ const HeroSection = () => {
     const loadData = async () => {
       try {
         const res = await fetchHeroSection()
-        if (res && res.docs && res.docs.length > 0) {
-          setData(res.docs[0])
+        console.log('Hero Data:', res)
+        if (res) {
+          setData(res)
         }
       } catch (error) {
         console.error('Error loading hero section:', error)
@@ -46,32 +47,40 @@ const HeroSection = () => {
             {data?.mainHeadingAfter || 'Starts Here'}
           </motion.h1>
 
-          <motion.p
-            className="text-[#A3A3A3] tracking-wide leading-8 font-light text-sm sm:text-base md:text-lg lg:text-[18px]"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            viewport={{ once: false, amount: 0.3 }}
-          >
-            {data?.subText || (
-              <>
-                Easily TAP into professional guidance for all your <br />
-                architectural and engineering needs.
-              </>
-            )}
-          </motion.p>
-
-          <a href={data?.buttonLink} target="_blank" rel="noopener noreferrer">
-            <motion.button
-              className="bg-[#FEBC5D] text-black mt-8 px-10 text-[14px] font-light tracking-wide py-3 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] hover:ease-in-out transition"
+          <div className="max-w-[580px]">
+            <motion.p
+              className="text-[#A3A3A3] tracking-wide leading-8 font-light text-sm sm:text-base md:text-lg lg:text-[18px]"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              viewport={{ once: false, amount: 0.3 }}
+            >
+              {data?.subText || (
+                <>
+                  Easily TAP into professional guidance for all your <br />
+                  architectural and engineering needs.
+                </>
+              )}
+            </motion.p>
+          </div>
+          {data?.buttonLink && (
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              viewport={{ once: false, amount: 0.3 }}
             >
-              {data?.buttonText || 'Start Your Project Now'}
-            </motion.button>
-          </a>
+              <a
+                href={data?.buttonLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <button className="bg-[#FEBC5D] text-black mt-8 px-10 text-[14px] font-light tracking-wide py-3 border-2 hover:border-white hover:bg-transparent hover:text-white transition duration-300 relative z-30">
+                  {data?.buttonText || 'Start Your Project Now'}
+                </button>
+              </a>
+            </motion.div>
+          )}
         </motion.div>
       </div>
 
