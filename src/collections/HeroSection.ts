@@ -7,14 +7,7 @@ const HeroSection: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: async ({ req: { payload } }) => {
-      const existing = await payload.find({
-        collection: 'herosection' as any,
-        limit: 1,
-      })
-
-      return existing.totalDocs === 0 // allow create only if no document exists
-    },
+    create: () => true,
     update: () => true,
   },
   fields: [

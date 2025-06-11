@@ -12,63 +12,70 @@ import { fetchServices } from '../utils/api'
 import SkeletonCard from './SkeletonCard'
 // ⬅️ adjust the path if needed
 
+type ServiceImage = {
+  image: {
+    url: string
+  }
+  tagline: string
+  location: string
+}
+
 type Service = {
   icon: React.ReactElement
   title: string
   description: string
   number: string
-  images: (StaticImageData | string)[]
-  location?: string
+  images: ServiceImage[]
 }
 
-const services: Service[] = [
-  {
-    icon: <FaBuilding size={40} color="#2d2d2e" />,
-    title: 'Residential',
-    description: 'Custom homes built to reflect your lifestyle, comfort, and vision.',
-    number: '01',
-    images: [project1, project2],
-  },
-  {
-    icon: <FaUser size={40} color="#2d2d2e" />,
-    title: 'Commercial',
-    description: 'Functional and modern spaces for offices, shops, and businesses.',
-    number: '02',
-    images: [project1, project2],
-  },
-  {
-    icon: <FaImage size={40} color="#2d2d2e" />,
-    title: 'Landscape',
-    description:
-      'Creative and sustainable outdoor environments that elevate your property’s beauty.',
-    number: '03',
-    images: ['/services/landscape1.jpg', '/services/landscape2.jpg'],
-  },
-  {
-    icon: <LuWaves size={40} color="#2d2d2e" />,
-    title: 'Swimming Pool',
-    description:
-      'Premium pools designed for relaxation and recreation — crafted with safety and style in mind.',
-    number: '04',
-    images: ['/services/pool1.jpg', '/services/pool2.jpg'],
-  },
-  {
-    icon: <FaHome size={40} color="#2d2d2e" />,
-    title: 'House Renovation',
-    description:
-      'From minor upgrades to major overhauls — we breathe new life into your existing space.',
-    number: '05',
-    images: ['/services/renovation1.jpg', '/services/renovation2.jpg'],
-  },
-  {
-    icon: <MdOutlineFence size={40} color="#2d2d2e" />,
-    title: 'Fencing and Backfilling',
-    description:
-      'Robust fencing solutions and reliable backfilling services for secure and stable properties.',
-    number: '06',
-    images: ['/services/fencing1.jpg', '/services/fencing2.jpg'],
-  },
-]
+// const services: Service[] = [
+//   {
+//     icon: <FaBuilding size={40} color="#2d2d2e" />,
+//     title: 'Residential',
+//     description: 'Custom homes built to reflect your lifestyle, comfort, and vision.',
+//     number: '01',
+//     images: [project1, project2],
+//   },
+//   {
+//     icon: <FaUser size={40} color="#2d2d2e" />,
+//     title: 'Commercial',
+//     description: 'Functional and modern spaces for offices, shops, and businesses.',
+//     number: '02',
+//     images: [project1, project2],
+//   },
+//   {
+//     icon: <FaImage size={40} color="#2d2d2e" />,
+//     title: 'Landscape',
+//     description:
+//       'Creative and sustainable outdoor environments that elevate your property’s beauty.',
+//     number: '03',
+//     images: ['/services/landscape1.jpg', '/services/landscape2.jpg'],
+//   },
+//   {
+//     icon: <LuWaves size={40} color="#2d2d2e" />,
+//     title: 'Swimming Pool',
+//     description:
+//       'Premium pools designed for relaxation and recreation — crafted with safety and style in mind.',
+//     number: '04',
+//     images: ['/services/pool1.jpg', '/services/pool2.jpg'],
+//   },
+//   {
+//     icon: <FaHome size={40} color="#2d2d2e" />,
+//     title: 'House Renovation',
+//     description:
+//       'From minor upgrades to major overhauls — we breathe new life into your existing space.',
+//     number: '05',
+//     images: ['/services/renovation1.jpg', '/services/renovation2.jpg'],
+//   },
+//   {
+//     icon: <MdOutlineFence size={40} color="#2d2d2e" />,
+//     title: 'Fencing and Backfilling',
+//     description:
+//       'Robust fencing solutions and reliable backfilling services for secure and stable properties.',
+//     number: '06',
+//     images: ['/services/fencing1.jpg', '/services/fencing2.jpg'],
+//   },
+// ]
 
 const DesignBuildServices = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null)
@@ -112,8 +119,13 @@ const DesignBuildServices = () => {
           title: item.title,
           description: item.description,
           number: item.number,
-          images: item.images.map((img: any) => img.image?.url || img.url),
-          location: item.location || '',
+          images: item.images.map((img: any) => ({
+            image: {
+              url: img.image?.url || img.url,
+            },
+            tagline: img.tagline || '',
+            location: img.location || '',
+          })),
         }))
         setDynamicServices(mapped)
       })
@@ -229,12 +241,17 @@ const DesignBuildServices = () => {
             onClick={() => setSelectedService(null)}
           >
             {/* Prev Button */}
-            <button
-              onClick={handlePrev}
-              className="absolute left-12 sm:left-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
-            >
-              <FaArrowLeft size={20} />
-            </button>
+            {selectedService.images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation() // Prevent modal from closing
+                  handlePrev()
+                }}
+                className="absolute left-12 sm:left-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
+              >
+                <FaArrowLeft size={20} />
+              </button>
+            )}
 
             {/* Modal Image Card */}
             <motion.div
@@ -245,27 +262,35 @@ const DesignBuildServices = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={selectedService.images[currentIndex] || '/fallback.jpg'}
+                src={selectedService.images[currentIndex]?.image?.url || '/fallback.jpg'}
                 alt={`${selectedService.title} image`}
                 fill
                 className="object-cover"
               />
               {/* Bottom Overlay Text */}
               <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
-                <h3 className="text-base font-medium">{selectedService.title}</h3>
+                <h3 className="text-base font-medium">
+                  {' '}
+                  {selectedService.images[currentIndex]?.tagline || 'Tagline'}
+                </h3>
                 <p className="text-sm text-white/80">
-                  {selectedService.location || 'Tagline or Location'}
+                  {selectedService.images[currentIndex]?.location || 'Location'}
                 </p>
               </div>
             </motion.div>
 
             {/* Next Button */}
-            <button
-              onClick={handleNext}
-              className="absolute right-12 sm:right-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
-            >
-              <FaArrowRight size={20} />
-            </button>
+            {selectedService.images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation() // Prevent modal from closing
+                  handleNext()
+                }}
+                className="absolute right-12 sm:right-24 bg-white/10 hover:bg-white/20 border border-white text-white rounded-full w-12 h-12 flex items-center justify-center z-50"
+              >
+                <FaArrowRight size={20} />
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
