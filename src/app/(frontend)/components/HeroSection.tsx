@@ -95,7 +95,8 @@ const HeroSection = () => {
         <Image
           src={data?.desktopImage?.url || heroImage}
           alt="Modern Home"
-          fill
+          width={100}
+          height={100}
           className="object-cover h-full"
           priority
         />
