@@ -96,7 +96,7 @@ const HeroSection = () => {
           src={data?.desktopImage?.url || heroImage}
           alt="Modern Home"
           fill
-          className="object-cover w-full h-full"
+          className="object-cover h-full"
           priority
         />
       </motion.div>
