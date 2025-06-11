@@ -61,11 +61,7 @@ const HeroSection = () => {
             )}
           </motion.p>
 
-          <a
-            href={data?.buttonLink || 'https://www.facebook.com/messages/e2ee/t/9401150536657301'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={data?.buttonLink} target="_blank" rel="noopener noreferrer">
             <motion.button
               className="bg-[#FEBC5D] text-black mt-8 px-10 text-[14px] font-light tracking-wide py-3 border-2 hover:border-2 hover:border-white hover:bg-transparent hover:text-[#fff] hover:ease-in-out transition"
               initial={{ opacity: 0, scale: 0.9 }}
