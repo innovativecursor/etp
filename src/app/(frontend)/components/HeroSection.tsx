@@ -86,7 +86,7 @@ const HeroSection = () => {
 
       {/* Desktop Image */}
       <motion.div
-        className="hidden lg:block absolute top-0 right-0 h-full min-h-[700px] w-[53%]"
+        className="hidden lg:block absolute top-0 right-0 h-full min-h-[700px] w-[53%] overflow-visible max-w-none"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 1 }}
@@ -96,7 +96,7 @@ const HeroSection = () => {
           src={data?.desktopImage?.url || heroImage}
           alt="Modern Home"
           fill
-          className="object-cover"
+          className="object-cover w-full h-full"
           priority
         />
       </motion.div>
